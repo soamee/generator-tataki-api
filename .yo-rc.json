@@ -1,8 +1,8 @@
 {
   "generator-node": {
     "promptValues": {
-      "authorName": "Javier Manzano",
-      "authorEmail": "jmanzano@soamee.com",
+      "authorName": "Soamee Studio",
+      "authorEmail": "info@soamee.com",
       "authorUrl": "http://soamee.com"
     }
   }

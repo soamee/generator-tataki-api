@@ -4,7 +4,7 @@ const chalk = require("chalk");
 const yosay = require("yosay");
 
 module.exports = class extends Generator {
-  prompting() {
+  async prompting() {
     // Have Yeoman greet the user.
     this.log(
       yosay(
@@ -12,19 +12,29 @@ module.exports = class extends Generator {
       )
     );
 
-    const prompts = [
+    this.answers = await this.prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Your project name",
+        default: this.appname
+      },
       {
         type: "confirm",
-        name: "someAnswer",
-        message: "Would you like to enable this option?",
+        name: "isGithubActionsEnabled",
+        message: "Would you like to enable the Github actions integration?",
+        default: true
+      },
+      {
+        type: "list",
+        name: "packageManager",
+        choices: ["npm", "yarn"],
+        message: "Which package manager do you want?",
         default: true
       }
-    ];
+    ]);
 
-    return this.prompt(prompts).then(props => {
-      // To access props later use this.props.someAnswer;
-      this.props = props;
-    });
+    this.log({ answers: this.answers });
   }
 
   writing() {
@@ -35,6 +45,10 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.installDependencies();
+    if (this.answers.packageManager === "yarn") {
+      this.yarnInstall();
+    } else {
+      this.npmInstall();
+    }
   }
 };
